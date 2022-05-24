@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>form sample</title>
+    <style>
+      p {
+        margin: 0;
+        padding-right: 14px;
+      }
+
+      .err {
+        text-align: right;
+      }
+
+      #main {
+        width: calc(100% - 32px);
+        margin: 0 auto;
+        max-width: 350px;
+      }
+
+      #main .text-box {
+        display: flex;
+        justify-content: end;
+      }
+
+      #main .text-box + .text-box{
+        margin-top: 14px;
+      }
+
+      .text-box input {
+        width: 190px;
+        background-color: #eeeeee;
+        border: 1px solid #7c7c7c;
+      }
+
+      .input button {
+        display: block;
+        margin-left: auto;
+        margin-top: 14px;
+        width: 60px;
+        height: 26px;
+      }
+    </style>
+</head>
+<body>
+  <div id="main">
+    <h1>ログイン画面</h1>
+    <form action="/top" method="post" name="main_form">
+      <div class="input">
+        <div class="text-box">
+          <p>loginId:</p>
+          <input type="text" name="login_id" id="login_id">
+        </div>
+        <div class="text-box">
+          <p>Password:</p>
+          <input type="text" name="login_pass" id="login_pass">
+        </div>
+          <p class="err"><%=err %></p>
+        <button type="submit">Login</button>
+      </div>  
+    </form>
+  </div>
+</body>
+</html>
