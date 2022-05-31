@@ -12,7 +12,13 @@ const connection = mysql.createConnection({
   user: 'root',
   password: 'root',
   database: 'mydb'
-})
+});
+const session = require('express-session');
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+}));
 
 connection.connect((err) => {
   // DBへの接続に失敗した場合の処理
@@ -21,30 +27,35 @@ connection.connect((err) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.render('login.ejs',{err:""});
+  if(req.session.username){
+    res.render("top.ejs",{name:req.session.username});
+  }else{
+    res.render('login.ejs',{err:""});
+  }
 });
 
 
-  app.post("/top", (req,res)=>{
-    
-    id =  req.body.login_id;
-    pass =  req.body.login_pass;
-    
-    if(id === "" && pass === "") {
-      res.render('login.ejs',{err:'入力を確認してください'});
-    }
-    
-    pass = crypto.createHash('sha256').update(req.body.login_pass).digest('hex')
+app.post("/top", (req,res)=>{
+  
+  id =  req.body.login_id;
+  pass =  req.body.login_pass;
+  
+  if(id === "" && pass === "") {
+    res.render('login.ejs',{err:'入力を確認してください'});
+  }
+  
+  pass = crypto.createHash('sha256').update(req.body.login_pass).digest('hex')
     
 connection.query('SELECT * FROM user', (err, results, fields) => {
   if (err) {
     // エラー処理
     throw err
-  }
+  };
 
    for (i = 0; i < results.length; i++) {
     if(id===results[i].user_id){
       if (pass===results[i].password){
+        req.session.username = results[i].name;
         res.render('top.ejs', {name:results[i].name})
       }else{
         res.render('login.ejs',{err:'パスワードが正しくありません。'});
