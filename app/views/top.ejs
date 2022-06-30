@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>メイン画面</title>
+</head>
+<body> 
+  <h1>ようこそ <%=name %></h1>
+  <ul id = "list">
+    <% file.forEach((f) => { %>
+      <li>
+        <a href='/download?name=<%= f.Key %>'><%= f.Key %> (<%= f.Size %>)</a>
+      </li>
+    <% }) %>
+  </ul>  
+</body>
+</html>
